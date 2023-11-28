@@ -17,3 +17,7 @@
 	path = openembedded-core
 	url = git://git.openembedded.org/openembedded-core
 	branch = kirkstone
+[submodule "meta-clang"]
+	path = meta-clang
+	url = https://github.com/kraj/meta-clang.git
+	branch = kirkstone
