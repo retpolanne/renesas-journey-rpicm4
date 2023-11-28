@@ -1,0 +1,67 @@
+/*
+[root@cyberia ~]#  bpftrace -l 'kprobe:pci_read_config*'
+kprobe:pci_read_config
+kprobe:pci_read_config_byte
+kprobe:pci_read_config_dword
+kprobe:pci_read_config_word
+[root@cyberia ~]#  bpftrace -l 'kprobe:pci_write_config*'
+kprobe:pci_write_config
+kprobe:pci_write_config_byte
+kprobe:pci_write_config_dword
+kprobe:pci_write_config_word
+[root@cyberia ~]#  bpftrace -l 'kprobe:renesas*'
+kprobe:renesas_check_rom
+kprobe:renesas_fw_check_running
+kprobe:renesas_fw_download_image
+kprobe:renesas_xhci_check_request_fw
+*/
+
+#include <pci/pci.h>
+
+BEGIN {
+	printf("Renesas PCI trace started... hit ctrl+c to end\n");
+}
+
+kprobe:renesas_fw_check_running {
+	printf("Renesas check fw running has been called\n");
+}
+
+kprobe:renesas_fw_download_image {
+	printf("Renesas download image has been called with iterator i=%d\n", arg2);
+}
+
+kprobe:renesas_check_rom {
+	printf("Renesas check rom has been called\n");
+}
+
+kprobe:pci_read_config_byte {
+	$pci_vendor = ((struct pci_dev *)arg0)->vendor_id;
+	$pci_device = ((struct pci_dev *)arg0)->device_id;
+	if($pci_vendor == 0x1912) {
+		printf("Reading the config register %02hhx from PCI %04x:%04x - content byte %02hhx\n", arg1, $pci_vendor, $pci_device, *arg2);
+	}
+}
+
+kprobe:pci_read_config_word {
+	$pci_vendor = ((struct pci_dev *)arg0)->vendor_id;
+	$pci_device = ((struct pci_dev *)arg0)->device_id;
+	if($pci_vendor == 0x1912) {
+		printf("Reading the config register %02hhx from PCI %04x:%04x - content word %lx\n", arg1, $pci_vendor, $pci_device, *arg2);
+	}
+}
+
+kprobe:pci_read_config_dword {
+	$pci_vendor = ((struct pci_dev *)arg0)->vendor_id;
+	$pci_device = ((struct pci_dev *)arg0)->device_id;
+	if($pci_vendor == 0x1912) {
+		printf("Reading the config register %02hhx from PCI %04x:%04x - content dword %08x\n", arg1, $pci_vendor, $pci_device, *arg2);
+	}
+}
+
+kprobe:pci_write_config* {
+	$pci_vendor = ((struct pci_dev *)arg0)->vendor_id;
+	$pci_device = ((struct pci_dev *)arg0)->device_id;
+	if($pci_vendor == 0x1912) {
+		printf("Writing the config register %02hhx from PCI %04x:%04x - content %04x\n", arg1, $pci_vendor, $pci_device, arg2);
+	}
+}
