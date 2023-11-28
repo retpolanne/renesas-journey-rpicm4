@@ -1,12 +1,19 @@
 [submodule "poky"]
 	path = poky
 	url = git://git.yoctoproject.org/poky
+	branch = kirkstone
 [submodule "meta-raspberrypi"]
 	path = meta-raspberrypi
 	url = git@github.com:agherzan/meta-raspberrypi.git
+	branch = kirkstone
 [submodule "meta-openembedded"]
 	path = meta-openembedded
 	url = https://github.com/openembedded/meta-openembedded.git
+	branch = kirkstone
 [submodule "build/workspace/sources/linux-raspberrypi"]
 	path = build/workspace/sources/linux-raspberrypi
 	url = https://github.com/raspberrypi/linux.git
+[submodule "openembedded-core"]
+	path = openembedded-core
+	url = git://git.openembedded.org/openembedded-core
+	branch = kirkstone
