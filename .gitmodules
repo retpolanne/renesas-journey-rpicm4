@@ -12,4 +12,4 @@
 	url = https://github.com/raspberrypi/linux.git
 [submodule "meta-observability"]
 	path = meta-observability
-	url = https://github.com/ce-bu/meta-observability.git
+	url = https://github.com/retpolanne/meta-observability.git
